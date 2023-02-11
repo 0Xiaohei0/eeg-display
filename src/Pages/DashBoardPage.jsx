@@ -1,4 +1,5 @@
 import React from "react";
+import DataFetch from "../Components/DataFetch";
 import FocusGraph from "../Components/focusGraph";
 import SideBar from "../Components/SideBar";
 
@@ -45,6 +46,7 @@ export default function DashBoardPage() {
       <div className="DashboardContent--Container">
         <FocusGraph />
         <SideBar />
+        <DataFetch />
       </div>
     </div>
   );

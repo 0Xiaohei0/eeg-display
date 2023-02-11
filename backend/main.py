@@ -7,6 +7,7 @@ from brainflow.data_filter import DataFilter, FilterTypes, DetrendOperations
 from brainflow.ml_model import MLModel, BrainFlowMetrics, BrainFlowClassifiers, BrainFlowModelParams
 from pyqtgraph.Qt import QtCore
 from PyQt5.QtWidgets import QApplication
+#from server import sendData 
 
 
 class Graph:
@@ -21,14 +22,14 @@ class Graph:
         self.window_size = 4
         self.num_points = self.window_size * self.sampling_rate
 
-        self.app = QApplication(sys.argv)
-        self.win = pg.GraphicsLayoutWidget(title='BrainFlow Plot', size=(800, 600), show=True)
-        self._init_timeseries()
+        #self.app = QApplication(sys.argv)
+        #self.win = pg.GraphicsLayoutWidget(title='BrainFlow Plot', size=(800, 600), show=True)
+        #self._init_timeseries()
 
-        timer = QtCore.QTimer()
-        timer.timeout.connect(self.update)
-        timer.start(self.update_speed_ms)
-        self.app.exec()
+        # timer = QtCore.QTimer()
+        # timer.timeout.connect(self.update)
+        # timer.start(self.update_speed_ms)
+        #self.app.exec()
 
     def _init_timeseries(self):
         self.plots = list()
@@ -45,6 +46,10 @@ class Graph:
             self.plots.append(p)
             curve = p.plot()
             self.curves.append(curve)
+
+    # def updateEEG():
+    #     while True:
+    #         self.update
 
     def update(self):
         data = self.board_shim.get_current_board_data(self.num_points)
@@ -72,11 +77,13 @@ class Graph:
             self.curves[count].setData(data[channel].tolist())
 
         #self.curves[4].setData(mindfulness.predict(feature_vector).tolist())
+        print("123")
+        #sendData(data)
         mindfulness.release()
         self.app.processEvents()
 
 
-def main():
+def InitializeEEG():
     BoardShim.enable_dev_board_logger()
     logging.basicConfig(level=logging.DEBUG)
 
@@ -100,4 +107,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    InitializeEEG()

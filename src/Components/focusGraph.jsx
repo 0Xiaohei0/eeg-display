@@ -54,18 +54,18 @@ function FocusGraph() {
   const chartReference = useRef();
   const [refresh, setRefresh] = useState(false);
   window.addEventListener("storage", () => {
-    console.log("dataChage");
+    //console.log("dataChage");
     setRefresh(!refresh);
   });
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("UpdatingData");
+      //console.log("UpdatingData");
       updateTestData();
       const chart = chartReference.current;
       //console.log(chart);
       chart.data.datasets[0].data = TestData.map((d) => d.data);
       chart.data.labels = TestData.map((d) => d.label);
-      //console.log(chart.data.datasets[0].data);
+      //.log(chart.data.datasets[0].data);
       chart.update();
     }, 10);
     return () => clearInterval(interval);
