@@ -1,4 +1,4 @@
-const MaxLength = 100;
+const MaxLength = 300;
 
 export const TestData = [
   { label: 1, data: Math.random() },

@@ -25,6 +25,7 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  animation: false,
   plugins: {
     legend: {
       position: "top",
@@ -66,7 +67,7 @@ function FocusGraph() {
       chart.data.labels = TestData.map((d) => d.label);
       //console.log(chart.data.datasets[0].data);
       chart.update();
-    }, 1000);
+    }, 10);
     return () => clearInterval(interval);
   }, [refresh]);
 
