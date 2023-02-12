@@ -33,7 +33,7 @@ export default function DataFetch() {
     socket.on("connect", (d) => {
       console.log("connecting to backend");
       if (d) {
-        setDataInput(JSON.parse(d.data)[1]);
+        setDataInput(JSON.parse(d.data)[0]);
         //console.log(JSON.parse(d.data)[2]);
       }
     });

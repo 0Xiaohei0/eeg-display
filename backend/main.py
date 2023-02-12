@@ -26,8 +26,8 @@ class Graph:
         params = BrainFlowInputParams()
         params.serial_port = "COM3"
         # board_id = BoardIds.SYNTHETIC_BOARD.value
-        params.file = "jawClench.txt"
-        params.master_board = BoardIds.CYTON_BOARD
+        params.file = "test.txt"
+        params.master_board = BoardIds.SYNTHETIC_BOARD
 
         #board_id = BoardIds.SYNTHETIC_BOARD.value
         board_id = BoardIds.PLAYBACK_FILE_BOARD.value
@@ -35,7 +35,7 @@ class Graph:
         self.board_shim.prepare_session()
         self.board_shim.start_stream(450000)
         # self.board_id = self.board_shim.get_board_id()
-        self.board_id = 0
+        self.board_id = -1
         self.eeg_channels = BoardShim.get_eeg_channels(int(self.board_id))
         self.exg_channels = BoardShim.get_exg_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
