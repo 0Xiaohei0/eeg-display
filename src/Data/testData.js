@@ -1,4 +1,4 @@
-const MaxLength = 100;
+const MaxLength = 300;
 
 export const TestData = Array(MaxLength).fill({ label: "", data: 0 });
 

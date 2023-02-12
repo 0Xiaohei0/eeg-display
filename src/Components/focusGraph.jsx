@@ -15,6 +15,7 @@ import { TestData, updateTestData } from "../Data/testData";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
+const focusThreshold = 0.8;
 
 ChartJS.register(
   CategoryScale,
@@ -56,6 +57,7 @@ export const data = {
 function FocusGraph() {
   const chartReference = useRef();
   const [refresh, setRefresh] = useState(false);
+  const [isFocusing, setIsFocusing] = useState(false);
   window.addEventListener("storage", () => {
     //console.log("dataChage");
     setRefresh(!refresh);
@@ -70,12 +72,23 @@ function FocusGraph() {
       chart.data.labels = dataSource.map((d) => d.label);
       //.log(chart.data.datasets[0].data);
       chart.update();
+      if (dataSource[0].data >= focusThreshold && !isFocusing) {
+        setIsFocusing(true);
+      } else if (dataSource[0].data < focusThreshold && isFocusing) {
+        setIsFocusing(false);
+      }
     }, 10);
     return () => clearInterval(interval);
-  }, [refresh]);
+  }, [refresh, isFocusing]);
 
   return (
     <div className="focusGraph--container">
+      <div
+        className={
+          "focusCircle " +
+          (dataSource[0].data >= focusThreshold ? "green" : "blue")
+        }
+      />
       <Line ref={chartReference} options={options} data={data} />
     </div>
   );
