@@ -36,11 +36,11 @@ export default function DataFetch() {
     setSocketInstance(socket);
 
     socket.on("connect", (d) => {
-      console.log("connecting to backend");
+      //console.log("connecting to backend");
       if (d) {
         //setDataInput(JSON.parse(d.score));
         setDataInput(JSON.parse(d.data)[1]);
-        console.log(JSON.parse(d.data));
+        //console.log(JSON.parse(d.data));
       }
     });
 

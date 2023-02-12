@@ -17,8 +17,8 @@ import { sendBlinkEventToBackend } from "./DataFetch";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
-const focusThreshold = 2500;
-const DATA_UPDATE_INTERVAL = 100;
+const focusThreshold = 1500;
+const DATA_UPDATE_INTERVAL = 50;
 
 ChartJS.register(
   CategoryScale,
@@ -34,10 +34,11 @@ export const options = {
   responsive: true,
   animation: false,
   pointRadius: 0,
+  borderWidth: 1,
   scales: {
     y: {
-      max: 6000,
-      min: -4000,
+      max: 3000,
+      min: -2000,
     },
   },
   plugins: {
@@ -64,6 +65,10 @@ export const data = {
     },
   ],
 };
+function getNewestData() {
+  if (dataSource) return dataSource[dataSource.length - 1].data;
+  return 0;
+}
 function FocusGraph() {
   const chartReference = useRef();
   const [refresh, setRefresh] = useState(false);
@@ -84,7 +89,7 @@ function FocusGraph() {
       chart.data.labels = dataSource.map((d) => d.label);
       //.log(chart.data.datasets[0].data);
       chart.update();
-      if (dataSource[0].data >= focusThreshold && !isFocusing) {
+      if (getNewestData() >= focusThreshold && !isFocusing) {
         setIsFocusing(true);
         if (canBlink) {
           sendBlinkEventToBackend();
@@ -93,11 +98,11 @@ function FocusGraph() {
             setCanBlink(true);
           }, 3 * 1000);
         }
-      } else if (dataSource[0].data < focusThreshold && isFocusing) {
+      } else if (getNewestData() < focusThreshold && isFocusing) {
         setIsFocusing(false);
       }
       setRefresh(true);
-    }, 50);
+    }, DATA_UPDATE_INTERVAL);
     return () => clearInterval(interval);
   }, [refresh, isFocusing]);
 
@@ -108,11 +113,11 @@ function FocusGraph() {
           <div
             className={
               "focusCircle " +
-              (dataSource[0].data >= focusThreshold ? "green" : "blue")
+              (getNewestData() >= focusThreshold ? "green" : "blue")
             }
           />
           <h3>
-            {dataSource[0].data >= focusThreshold ? "blinking" : "not blinking"}
+            {getNewestData() >= focusThreshold ? "blinking" : "not blinking"}
           </h3>
         </div>
         <div
@@ -121,7 +126,7 @@ function FocusGraph() {
         >
           <h5 className="mb-2 text-2xl font-bold ">Focus Value</h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            {dataSource[0].data}
+            {getNewestData()}
           </p>
           <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
             {getPreviousValue()}
