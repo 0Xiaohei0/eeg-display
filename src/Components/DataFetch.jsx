@@ -2,6 +2,7 @@ import HttpCall from "./HttpCall";
 import WebSocketCall from "./WebSocketCall";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
+import { setDataInput } from "../Data/testData";
 
 import React from "react";
 
@@ -9,7 +10,6 @@ export default function DataFetch() {
   const [socketInstance, setSocketInstance] = useState("");
   const [loading, setLoading] = useState(true);
   const [buttonStatus, setButtonStatus] = useState(true);
-  const [data, setData] = useState([]);
 
   const handleClick = () => {
     if (buttonStatus === false) {
@@ -33,8 +33,8 @@ export default function DataFetch() {
     socket.on("connect", (d) => {
       console.log("connecting to backend");
       if (d) {
-        setData(JSON.parse(d.data)[0]);
-        console.log(JSON.parse(d.data)[0]);
+        setDataInput(JSON.parse(d.data)[2]);
+        //console.log(JSON.parse(d.data)[0]);
       }
     });
 
