@@ -1,8 +1,8 @@
 from flask import Flask, request,jsonify
 from flask_socketio import SocketIO,emit
 from flask_cors import CORS
-from main import InitializeEEG
 from threading import Thread, Event
+import main
 # Create thread
 thread = Thread()
 thread_stop_event = Event()
@@ -28,32 +28,37 @@ def connected():
     global thread
     if not thread.is_alive():
         print("Starting Thread")
-    
-    thread = socketio.start_background_task(InitializeEEG)
+        print(type(main.graph))
+        if(main.graph != None):
+            print("Starting Thread222")
+            thread = socketio.start_background_task(main.graph.update)
 
-    emit("connect",{"data":f"id: {request.sid} is connected"})
+    #emit("connect",{"data":f"id: {request.sid} is connected"})
+    #emit("connect",{"data":f"id: {request.sid} is connected"})
 
-def sendData(data):
-    print("send data")
-    if (userConnected):
-        print("send data user connected")
-        emit("data",{'data':data},broadcast=True)
+# def sendData(data):
+#     print("send data")
+#     if (userConnected):
+#         print("send data user connected")
+#         emit("data",{'data':data},broadcast=True)
 
 
-@socketio.on('data')
-def handle_message(data):
-    """event listener when client types a message"""
-    print("data from the front end: ",str(data))
-    emit("data",{'data':data,'id':request.sid},broadcast=True)
+# @socketio.on('data')
+# def handle_message(data):
+#     """event listener when client types a message"""
+#     print("data from the front end: ",str(data))
+#     emit("data",{'data':data,'id':request.sid},broadcast=True)
 
-@socketio.on("disconnect")
-def disconnected():
-    userConnected = False
-    """event listener when client disconnects to the server"""
-    print("user disconnected")
-    emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
+# @socketio.on("disconnect")
+# def disconnected():
+#     userConnected = False
+#     """event listener when client disconnects to the server"""
+#     print("user disconnected")
+#     emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
 
 if __name__ == '__main__':
+    print("running server")
+    main.InitializeEEG()
     socketio.run(app, debug=True,port=5001,)
     
 # if __name__ == '__main__':

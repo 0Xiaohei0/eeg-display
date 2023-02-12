@@ -19,6 +19,7 @@ export default function DataFetch() {
   };
 
   useEffect(() => {
+    console.log("useEffect called");
     const socket = io("localhost:5001/", {
       transports: ["websocket"],
       cors: {
@@ -29,6 +30,7 @@ export default function DataFetch() {
     setSocketInstance(socket);
 
     socket.on("connect", (data) => {
+      console.log("connecting to bank");
       console.log(data);
     });
 
