@@ -28,7 +28,7 @@ def sendData():
     while not thread_stop_event.isSet():
         graph.update()
         socketio.sleep(0.25)
-        print(graph.data)
+        #print(graph.data)
         endoded=SimpleEncode(graph.data)
         socketio.emit("connect",{'data':endoded },broadcast=True, namespace="", to="")
 
