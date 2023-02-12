@@ -12,7 +12,7 @@
 
 .focusGraph--container {
   padding-top: 100px;
-  margin-left: 300px;
+  margin-left: 500px;
   max-width: 800px;
   max-height: 500px;
 }
@@ -22,6 +22,7 @@
 }
 .focusCircle--head {
   display: flex;
+  justify-content: space-around;
   gap: 20px;
 }
 
@@ -43,7 +44,11 @@
 .green {
   background-color: rgb(132, 172, 124);
 }
-
+.blinkDisplay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .CoverCardList--container {
   display: grid;
   gap: 20px;

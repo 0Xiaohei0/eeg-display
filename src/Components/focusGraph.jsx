@@ -121,15 +121,15 @@ function FocusGraph() {
         </div>
         <div
           href="#"
-          className="inline-block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow "
+          className="blinkDisplay max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow "
         >
           <h5 className="mb-2 text-2xl font-bold ">Blink Value</h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
             {Math.round(getNewestData())}
           </p>
-          <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+          {/* <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
             {Math.round(getPreviousValue())}
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="focusGraph--chart">
