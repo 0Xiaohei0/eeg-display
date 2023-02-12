@@ -17,7 +17,7 @@ import { sendBlinkEventToBackend } from "./DataFetch";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
-const focusThreshold = 2000;
+const focusThreshold = 3000;
 const DATA_UPDATE_INTERVAL = 50;
 
 ChartJS.register(
@@ -37,7 +37,7 @@ export const options = {
   borderWidth: 1,
   scales: {
     y: {
-      max: 3000,
+      max: 4500,
       min: -2000,
     },
   },
