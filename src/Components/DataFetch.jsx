@@ -54,20 +54,5 @@ export default function DataFetch() {
     };
   }, []);
 
-  return (
-    <div className="dataFetch">
-      <h1>React/Flask App + socket.io</h1>
-      <div className="line">{/* <HttpCall /> */}</div>
-      {!buttonStatus ? (
-        <button onClick={handleClick}>turn chat on</button>
-      ) : (
-        <>
-          <button onClick={handleClick}>turn chat off</button>
-          <div className="line">
-            {!loading && <WebSocketCall socket={socketInstance} />}
-          </div>
-        </>
-      )}
-    </div>
-  );
+  return <div className="dataFetch"></div>;
 }

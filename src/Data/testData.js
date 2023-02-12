@@ -1,4 +1,4 @@
-const MaxLength = 100;
+const MaxLength = 300;
 
 export const TestData = Array(MaxLength).fill({ label: "", data: 0 });
 
@@ -15,10 +15,12 @@ export function setDataInput(input) {
 
 export function updateTestData() {
   TestData.splice(0, 1);
-  inputValue = Math.random() * 100;
-  inputValue = inputQueue.splice(0, 1);
-  //console.log("value: " + typeof parseFloat(inputValue));
-  TestData.push({ label: "", data: parseFloat(inputValue) });
+  
+  inputValue = parseFloat(inputQueue.splice(0, 1));
+  if(isNaN(inputValue) )
+    inputValue = Math.random() * 100;
+  //console.log("value: " +  isNaN(inputValue));
+  TestData.push({ label: "", data: inputValue });
   // console.log(
   //   `TestData: ${TestData.map((i) => {
   //     return i.data;
