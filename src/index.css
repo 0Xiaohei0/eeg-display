@@ -15,3 +15,45 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+Button {
+  align-items: center;
+  appearance: none;
+  background-color: #eeeeee;
+  border-radius: 4px;
+  border: 3px solid rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+  color: #36395a;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+Button:hover {
+  transform: translateY(-2px);
+}
+
+Button:active {
+  transform: translateY(2px);
+}
+
+a {
+  all: unset;
+  cursor: pointer;
+}

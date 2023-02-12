@@ -1,7 +1,67 @@
+:root {
+  --primary: rgb(249, 250, 251);
+  --secondary: #f3e2bf;
+  --accent: #3f1919;
+  --accent2: #123c69;
+  --accent3: #ac3b61;
+}
+
 .App {
   text-align: center;
 }
 
 .focusGraph--container {
-  max-width: 600px;
+  padding-top: 100px;
+  margin-left: 300px;
+  max-width: 60vw;
+}
+
+.CoverCardList--container {
+  display: grid;
+  gap: 20px;
+  padding: 50px;
+  margin-left: 300px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-auto-rows: auto;
+  justify-content: flex-start;
+}
+
+.coverCard--image {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  display: block;
+  border-radius: 5px;
+  background-size: cover;
+}
+
+.coverCard--container {
+  all: unset;
+  border-radius: 5px;
+  max-width: fit-content;
+  cursor: pointer;
+  transition: color 0.1s;
+  position: relative;
+}
+
+.Navbar {
+  position: fixed;
+  width: 100vw;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary);
+  padding: 30px;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
+
+.Navbar--ProfileImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 500%;
+  object-fit: cover;
 }
