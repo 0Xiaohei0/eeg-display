@@ -83,12 +83,17 @@ function FocusGraph() {
 
   return (
     <div className="focusGraph--container">
-      <div
-        className={
-          "focusCircle " +
-          (dataSource[0].data >= focusThreshold ? "green" : "blue")
-        }
-      />
+      <div className="focusCircle--container">
+        <div
+          className={
+            "focusCircle " +
+            (dataSource[0].data >= focusThreshold ? "green" : "blue")
+          }
+        />
+        <h3>
+          {dataSource[0].data >= focusThreshold ? "focusing" : "not focusing"}
+        </h3>
+      </div>
       <Line ref={chartReference} options={options} data={data} />
     </div>
   );

@@ -16,6 +16,10 @@
   max-width: 60vw;
 }
 
+.focusCircle--container {
+  width: fit-content;
+}
+
 .focusCircle {
   height: 200px;
   width: 200px;
