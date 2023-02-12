@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { TestData, updateTestData } from "../Data/testData";
+import { TestData, updateTestData, getPreviousValue } from "../Data/testData";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
@@ -107,6 +107,9 @@ function FocusGraph() {
           <p className="font-normal text-gray-700 dark:text-gray-400">
             {dataSource[0].data}
           </p>
+          <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+            {getPreviousValue()}
+          </span>
         </div>
       </div>
       <div className="focusGraph--chart">

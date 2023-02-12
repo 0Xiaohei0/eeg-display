@@ -23,19 +23,18 @@ class Graph:
         BoardShim.enable_dev_board_logger()
         logging.basicConfig(level=logging.DEBUG)
 
+        #Playback boards
         params = BrainFlowInputParams()
         params.serial_port = "COM3"
-        # board_id = BoardIds.SYNTHETIC_BOARD.value
-        params.file = "test.txt"
-        params.master_board = BoardIds.SYNTHETIC_BOARD
-
-        #board_id = BoardIds.SYNTHETIC_BOARD.value
+        params.file = "eyeBlink.csv"
+        params.master_board = BoardIds.GANGLION_BOARD
         board_id = BoardIds.PLAYBACK_FILE_BOARD.value
+        self.board_id = -1
+
         self.board_shim = BoardShim(board_id, params)
         self.board_shim.prepare_session()
         self.board_shim.start_stream(450000)
         # self.board_id = self.board_shim.get_board_id()
-        self.board_id = -1
         self.eeg_channels = BoardShim.get_eeg_channels(int(self.board_id))
         self.exg_channels = BoardShim.get_exg_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
@@ -92,7 +91,7 @@ class Graph:
         mindfulness = MLModel(mindfulness_params)
         mindfulness.prepare()
         score = mindfulness.predict(feature_vector)
-        #print(str(score))
+        print(str(score))
         #print('Mindfulness: %s' % str(mindfulness.predict(feature_vector)))
 
         for count, channel in enumerate(self.exg_channels):
@@ -107,6 +106,7 @@ class Graph:
             self.curves[count].setData(data[channel].tolist())
             #print(data[0])
         self.data = data
+        self.score = score
         #self.curves[4].setData(mindfulness.predict(feature_vector).tolist())
         mindfulness.release()
         self.app.processEvents()

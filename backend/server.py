@@ -29,9 +29,11 @@ def sendData():
         graph.update()
         socketio.sleep(0.25)
         #print(graph.data)
-        endoded=SimpleEncode(graph.data)
-        #print(endoded)
-        socketio.emit("connect",{'data':endoded },broadcast=True, namespace="", to="")
+        encoded=SimpleEncode(graph.data)
+        encoded2=SimpleEncode(graph.score)
+
+        #print(encoded)
+        socketio.emit("connect",{'data':encoded,'score': encoded2 },broadcast=True, namespace="", to="")
 
 
 @socketio.on("connect")
