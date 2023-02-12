@@ -15,10 +15,9 @@ export function setDataInput(input) {
 
 export function updateTestData() {
   TestData.splice(0, 1);
-  
+
   inputValue = parseFloat(inputQueue.splice(0, 1));
-  if(isNaN(inputValue) )
-    inputValue = Math.random() * 100;
+  if (isNaN(inputValue)) inputValue = Math.random();
   //console.log("value: " +  isNaN(inputValue));
   TestData.push({ label: "", data: inputValue });
   // console.log(
