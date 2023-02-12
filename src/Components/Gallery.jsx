@@ -23,7 +23,6 @@ export default function Gallery() {
           alt="description"
         />
       ))}
-      ;
     </div>
   );
 }
