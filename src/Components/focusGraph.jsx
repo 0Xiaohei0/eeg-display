@@ -17,7 +17,7 @@ import { sendBlinkEventToBackend } from "./DataFetch";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
-const focusThreshold = 1500;
+const focusThreshold = 2000;
 const DATA_UPDATE_INTERVAL = 50;
 
 ChartJS.register(
@@ -47,7 +47,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Focus meter",
+      text: "",
     },
   },
 };
@@ -58,7 +58,7 @@ export const data = {
   labels,
   datasets: [
     {
-      label: "focus value",
+      label: "Blink activity",
       data: dataSource.map((d) => d.data),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -75,7 +75,7 @@ function FocusGraph() {
   const [isFocusing, setIsFocusing] = useState(false);
   const [focusAmount, setFocusAmount] = useState(0);
   const [canBlink, setCanBlink] = useState(true);
-  window.addEventListener("storage", () => {
+  window.addEventListener("dataChange", () => {
     //console.log("dataChage");
     setRefresh(!refresh);
   });
@@ -101,7 +101,6 @@ function FocusGraph() {
       } else if (getNewestData() < focusThreshold && isFocusing) {
         setIsFocusing(false);
       }
-      setRefresh(true);
     }, DATA_UPDATE_INTERVAL);
     return () => clearInterval(interval);
   }, [refresh, isFocusing]);
@@ -124,12 +123,12 @@ function FocusGraph() {
           href="#"
           className="inline-block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow "
         >
-          <h5 className="mb-2 text-2xl font-bold ">Focus Value</h5>
+          <h5 className="mb-2 text-2xl font-bold ">Blink Value</h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            {getNewestData()}
+            {Math.round(getNewestData())}
           </p>
           <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
-            {getPreviousValue()}
+            {Math.round(getPreviousValue())}
           </span>
         </div>
       </div>

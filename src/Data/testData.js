@@ -9,7 +9,7 @@ let inputValue = 0;
 export let prevValue = 0;
 
 export function setDataInput(input) {
-  console.log(`input: ${input.length}`);
+  //console.log(`input: ${input.length}`);
   //console.log(`adding to inputQueue ${inputQueue}`);
   if (inputQueue.length <= 10) {
     for (let i = input.length - 1; i >= input.length - 10; i--)
@@ -19,7 +19,7 @@ export function setDataInput(input) {
 }
 
 export function getPreviousValue() {
-  return inputValue - prevValue;
+  return Math.abs(inputValue) - Math.abs(prevValue);
 }
 
 export function updateTestData() {
@@ -27,7 +27,7 @@ export function updateTestData() {
   //console.log(TestData.length);
 
   prevValue = TestData.at(TestData.length - 1).data;
-
+  console.log(prevValue);
   if (USING_BACKEND_DATA) {
     inputValue = parseFloat(inputQueue.splice(0, 1));
     if (isNaN(inputValue)) inputValue = prevValue;
