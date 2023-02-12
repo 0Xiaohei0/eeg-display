@@ -14,10 +14,20 @@
   padding-top: 100px;
   margin-left: 300px;
   max-width: 60vw;
+  max-height: 500px;
 }
 
 .focusCircle--container {
   width: fit-content;
+}
+.focusCircle--head {
+  display: flex;
+  gap: 20px;
+}
+
+.focusGraph--chart {
+  max-width: 500px;
+  max-height: 300px;
 }
 
 .focusCircle {

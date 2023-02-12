@@ -16,6 +16,7 @@ import { TestData, updateTestData } from "../Data/testData";
 let dataSource = TestData;
 let updateDataSource = updateTestData;
 const focusThreshold = 0.8;
+const DATA_UPDATE_INTERVAL = 30;
 
 ChartJS.register(
   CategoryScale,
@@ -30,6 +31,7 @@ ChartJS.register(
 export const options = {
   responsive: true,
   animation: false,
+  pointRadius: 0,
   plugins: {
     legend: {
       position: "top",
@@ -58,6 +60,7 @@ function FocusGraph() {
   const chartReference = useRef();
   const [refresh, setRefresh] = useState(false);
   const [isFocusing, setIsFocusing] = useState(false);
+  const [focusAmount, setFocusAmount] = useState(0);
   window.addEventListener("storage", () => {
     //console.log("dataChage");
     setRefresh(!refresh);
@@ -77,24 +80,38 @@ function FocusGraph() {
       } else if (dataSource[0].data < focusThreshold && isFocusing) {
         setIsFocusing(false);
       }
-    }, 10);
+      setRefresh(true);
+    }, DATA_UPDATE_INTERVAL);
     return () => clearInterval(interval);
   }, [refresh, isFocusing]);
 
   return (
     <div className="focusGraph--container">
-      <div className="focusCircle--container">
+      <div className="focusCircle--head">
+        <div className="focusCircle--container">
+          <div
+            className={
+              "focusCircle " +
+              (dataSource[0].data >= focusThreshold ? "green" : "blue")
+            }
+          />
+          <h3>
+            {dataSource[0].data >= focusThreshold ? "focusing" : "not focusing"}
+          </h3>
+        </div>
         <div
-          className={
-            "focusCircle " +
-            (dataSource[0].data >= focusThreshold ? "green" : "blue")
-          }
-        />
-        <h3>
-          {dataSource[0].data >= focusThreshold ? "focusing" : "not focusing"}
-        </h3>
+          href="#"
+          className="inline-block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow "
+        >
+          <h5 className="mb-2 text-2xl font-bold ">Focus Value</h5>
+          <p className="font-normal text-gray-700 dark:text-gray-400">
+            {dataSource[0].data}
+          </p>
+        </div>
       </div>
-      <Line ref={chartReference} options={options} data={data} />
+      <div className="focusGraph--chart">
+        <Line ref={chartReference} options={options} data={data} />
+      </div>
     </div>
   );
 }
