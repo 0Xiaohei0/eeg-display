@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { setDataInput } from "../Data/testData";
+import { setAdditionalDataInput } from "../Data/additionalData";
 
 import React from "react";
 let socket = io("localhost:5001/", {
@@ -38,6 +39,7 @@ export default function DataFetch() {
       if (d) {
         //setDataInput(JSON.parse(d.score));
         setDataInput(JSON.parse(d.data)[1]);
+        setAdditionalDataInput(JSON.parse(d.data));
         //console.log(JSON.parse(d.data));
       }
     });
