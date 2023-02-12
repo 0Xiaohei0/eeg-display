@@ -13,6 +13,9 @@ import {
 import { Line } from "react-chartjs-2";
 import { TestData, updateTestData } from "../Data/testData";
 
+let dataSource = TestData;
+let updateDataSource = updateTestData;
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -37,14 +40,14 @@ export const options = {
   },
 };
 
-const labels = TestData.map((data) => data.label);
+const labels = dataSource.map((data) => data.label);
 
 export const data = {
   labels,
   datasets: [
     {
       label: "focus value",
-      data: TestData.map((d) => d.data),
+      data: dataSource.map((d) => d.data),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
@@ -60,11 +63,11 @@ function FocusGraph() {
   useEffect(() => {
     const interval = setInterval(() => {
       //console.log("UpdatingData");
-      updateTestData();
+      updateDataSource();
       const chart = chartReference.current;
       //console.log(chart);
-      chart.data.datasets[0].data = TestData.map((d) => d.data);
-      chart.data.labels = TestData.map((d) => d.label);
+      chart.data.datasets[0].data = dataSource.map((d) => d.data);
+      chart.data.labels = dataSource.map((d) => d.label);
       //.log(chart.data.datasets[0].data);
       chart.update();
     }, 10);

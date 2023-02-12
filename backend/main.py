@@ -11,8 +11,6 @@ from PyQt5.QtWidgets import QApplication
 
 from threading import Timer
 
-graph = None
-
 class RepeatTimer(Timer):  
     def run(self):  
         while not self.finished.wait(self.interval):  
@@ -20,11 +18,20 @@ class RepeatTimer(Timer):
             print(' ')  
 
 class Graph:
-    def __init__(self, board_shim):
+    def __init__(self):
         print("initializing graph")
+        BoardShim.enable_dev_board_logger()
+        logging.basicConfig(level=logging.DEBUG)
+
+        params = BrainFlowInputParams()
+        params.serial_port = "COM4"
+        # board_id = BoardIds.SYNTHETIC_BOARD.value
+        board_id = BoardIds.SYNTHETIC_BOARD.value
+        self.board_shim = BoardShim(board_id, params)
+        self.board_shim.prepare_session()
+        self.board_shim.start_stream(450000)
         #self.board_id = board_shim.get_board_id()
         self.board_id = -1
-        self.board_shim = board_shim
         self.eeg_channels = BoardShim.get_eeg_channels(int(self.board_id))
         self.exg_channels = BoardShim.get_exg_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
@@ -48,6 +55,7 @@ class Graph:
         # timer.cancel()
         # self.app.exec()
 
+
     def _init_timeseries(self):
         print("initializing board: " , end="")
         print(self.board_shim)
@@ -67,6 +75,7 @@ class Graph:
             self.curves.append(curve)
 
     def update(self):
+        
         print("updating board:" , end="")
         print(self.board_shim)
         data = self.board_shim.get_current_board_data(self.num_points)
@@ -93,7 +102,7 @@ class Graph:
                                         FilterTypes.BUTTERWORTH.value, 0)
             self.curves[count].setData(data[channel].tolist())
             #print(data[0])
-
+        self.data = data
         #self.curves[4].setData(mindfulness.predict(feature_vector).tolist())
         mindfulness.release()
         self.app.processEvents()
@@ -101,30 +110,20 @@ class Graph:
 
 def InitializeEEG():
     print("calling main function")
-    BoardShim.enable_dev_board_logger()
-    logging.basicConfig(level=logging.DEBUG)
+    
 
-    params = BrainFlowInputParams()
-    params.serial_port = "COM4"
-    # board_id = BoardIds.SYNTHETIC_BOARD.value
-    board_id = BoardIds.SYNTHETIC_BOARD.value
-
-    try:
-        board_shim = BoardShim(board_id, params)
-        board_shim.prepare_session()
-        board_shim.start_stream(450000)
-        global graph
-        graph = Graph(board_shim)
-        print("initilize graph")
-        #print(type(graph))
-        #graph.update()
-    except BaseException:
-        logging.warning('Exception', exc_info=True)
-    finally:
-        logging.info('End')
-        if board_shim.is_prepared():
-            logging.info('Releasing session')
-            board_shim.release_session()
+    # try:
+       
+    #     print("initilize graph")
+    #     #print(type(graph))
+    #     #graph.update()
+    # except BaseException:
+    #     logging.warning('Exception', exc_info=True)
+    # finally:
+    #     logging.info('End')
+    #     if board_shim.is_prepared():
+    #         logging.info('Releasing session')
+    #         board_shim.release_session()
 
 #if __name__ == '__main__':
 #    InitializeEEG()

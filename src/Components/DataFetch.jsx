@@ -9,6 +9,7 @@ export default function DataFetch() {
   const [socketInstance, setSocketInstance] = useState("");
   const [loading, setLoading] = useState(true);
   const [buttonStatus, setButtonStatus] = useState(true);
+  const [data, setData] = useState([]);
 
   const handleClick = () => {
     if (buttonStatus === false) {
@@ -29,20 +30,22 @@ export default function DataFetch() {
 
     setSocketInstance(socket);
 
-    socket.on("connect", (data) => {
-      console.log("connecting to bank");
-      console.log(data);
+    socket.on("connect", (d) => {
+      console.log("connecting to backend");
+      setData(data);
+      console.log(d);
     });
 
-    socket.on("data", (data) => {
-      console.log(data);
-    });
+    // socket.on("data", (data) => {
+    //   console.log("connecting to bank");
+    //   console.log(data);
+    // });
 
-    setLoading(false);
+    // setLoading(false);
 
-    socket.on("disconnect", (data) => {
-      console.log(data);
-    });
+    // socket.on("disconnect", (data) => {
+    //   console.log(data);
+    // });
 
     return function cleanup() {
       socket.disconnect();

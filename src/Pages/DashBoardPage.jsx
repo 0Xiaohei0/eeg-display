@@ -11,7 +11,7 @@ export default function DashBoardPage() {
         <Navbar />
         <FocusGraph />
         <SideBar />
-        {/* <DataFetch /> */}
+        <DataFetch />
       </div>
     </div>
   );

@@ -1,37 +1,51 @@
-from flask import Flask, request,jsonify
-from flask_socketio import SocketIO,emit
+from flask import Flask,jsonify
+from flask_socketio import SocketIO
 from flask_cors import CORS
 from threading import Thread, Event
-import main
-# Create thread
+from main import Graph
+import json
 thread = Thread()
 thread_stop_event = Event()
+
+initialized = False
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app,resources={r"/*":{"origins":"*"}})
 socketio = SocketIO(app,cors_allowed_origins="http://localhost:5000")
 userConnected = False
+graph = Graph()
+# @app.route("/http-call")
+# def http_call():
+#     """return JSON with string data as the value"""
+#     data = {'data':'This text was fetched using an HTTP call to server on render'}
+#     return jsonify(data)
 
-@app.route("/http-call")
-def http_call():
-    """return JSON with string data as the value"""
-    data = {'data':'This text was fetched using an HTTP call to server on render'}
-    return jsonify(data)
+def SimpleEncode(ndarray):
+    return json.dumps(ndarray.tolist())
+
+def sendData():
+    while not thread_stop_event.isSet():
+        graph.update()
+        socketio.sleep(0.25)
+        print(graph.data)
+        endoded=SimpleEncode(graph.data)
+        socketio.emit("connect",{'data':endoded },broadcast=True, namespace="", to="")
+
 
 @socketio.on("connect")
 def connected():
     """event listener when client connects to the server"""
     userConnected = True
-    print(request.sid)
+    #print(request.sid)
     print("client has connected")
     global thread
     if not thread.is_alive():
         print("Starting Thread")
-        print(type(main.graph))
-        if(main.graph != None):
+        print(type(graph))
+        if(graph != None):
             print("Starting Thread222")
-            thread = socketio.start_background_task(main.graph.update)
+            thread = socketio.start_background_task(sendData)
 
     #emit("connect",{"data":f"id: {request.sid} is connected"})
     #emit("connect",{"data":f"id: {request.sid} is connected"})
@@ -58,7 +72,6 @@ def connected():
 
 if __name__ == '__main__':
     print("running server")
-    main.InitializeEEG()
     socketio.run(app, debug=True,port=5001,)
     
 # if __name__ == '__main__':
