@@ -15,7 +15,7 @@ def callPi(media=IMAGE):
         image_name = time.ctime().replace(' ','-').replace(':','-')
         s.send(bytes(image_name, encoding='utf-8'))
 
-        file_name = "{0}.jpg".format(image_name)
+        file_name = "src/Data/Photos/{0}.jpg".format(image_name)
 
         with open(file_name, 'wb') as f:
             print('file opened')

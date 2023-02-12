@@ -30,6 +30,7 @@ def sendData():
         socketio.sleep(0.25)
         #print(graph.data)
         endoded=SimpleEncode(graph.data)
+        #print(endoded)
         socketio.emit("connect",{'data':endoded },broadcast=True, namespace="", to="")
 
 

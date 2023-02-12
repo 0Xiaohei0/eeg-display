@@ -24,14 +24,18 @@ class Graph:
         logging.basicConfig(level=logging.DEBUG)
 
         params = BrainFlowInputParams()
-        params.serial_port = "COM4"
+        params.serial_port = "COM3"
         # board_id = BoardIds.SYNTHETIC_BOARD.value
-        board_id = BoardIds.SYNTHETIC_BOARD.value
+        params.file = "jawClench.txt"
+        params.master_board = BoardIds.CYTON_BOARD
+
+        #board_id = BoardIds.SYNTHETIC_BOARD.value
+        board_id = BoardIds.PLAYBACK_FILE_BOARD.value
         self.board_shim = BoardShim(board_id, params)
         self.board_shim.prepare_session()
         self.board_shim.start_stream(450000)
-        #self.board_id = board_shim.get_board_id()
-        self.board_id = -1
+        # self.board_id = self.board_shim.get_board_id()
+        self.board_id = 0
         self.eeg_channels = BoardShim.get_eeg_channels(int(self.board_id))
         self.exg_channels = BoardShim.get_exg_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
@@ -125,5 +129,6 @@ def InitializeEEG():
     #         logging.info('Releasing session')
     #         board_shim.release_session()
 
-#if __name__ == '__main__':
-#    InitializeEEG()
+if __name__ == '__main__':
+   graph = Graph()
+   graph.update()
