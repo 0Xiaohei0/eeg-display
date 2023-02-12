@@ -40,7 +40,7 @@ export default function DataFetch() {
       if (d) {
         //setDataInput(JSON.parse(d.score));
         setDataInput(JSON.parse(d.data)[1]);
-        //console.log(JSON.parse(d.data)[1]);
+        console.log(JSON.parse(d.data));
       }
     });
 

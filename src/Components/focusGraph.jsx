@@ -17,7 +17,7 @@ import { sendBlinkEventToBackend } from "./DataFetch";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
-const focusThreshold = 3000;
+const focusThreshold = 2500;
 const DATA_UPDATE_INTERVAL = 100;
 
 ChartJS.register(

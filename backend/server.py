@@ -7,15 +7,24 @@ import json
 thread = Thread()
 thread_stop_event = Event()
 from ImageClient import callPi
+from functools import wraps
 
-initialized = False
+import os.path
 
+def init_bot():
+    bot = True
+    # create an empty file to denote that bot has been initiated 
+    open('bot.initiated', 'a').close()  
+    return bot
+graph = Graph()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app,resources={r"/*":{"origins":"*"}})
 socketio = SocketIO(app,cors_allowed_origins="http://localhost:5000")
-userConnected = False
-graph = Graph()
+if not os.path.exists('bot.initiated'):
+    bot = init_bot()
+
+
 # @app.route("/http-call")
 # def http_call():
 #     """return JSON with string data as the value"""
@@ -44,6 +53,7 @@ def connected():
     #print(request.sid)
     print("client has connected")
     global thread
+    global graph
     if not thread.is_alive():
         print("Starting Thread")
         print(type(graph))
@@ -86,7 +96,8 @@ def blinked():
 
 if __name__ == '__main__':
     print("running server")
-    socketio.run(app, debug=True,port=5001,)
+    socketio.run(app,port=5001,)
+ 
     
 # if __name__ == '__main__':
 #   app.run(debug =True)

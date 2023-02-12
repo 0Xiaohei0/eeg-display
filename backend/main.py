@@ -24,11 +24,17 @@ class Graph:
         logging.basicConfig(level=logging.DEBUG)
 
         #Playback boards
+        # params = BrainFlowInputParams()
+        # params.serial_port = "COM3"
+        # params.file = "eyeBlink.csv"
+        # params.master_board = BoardIds.GANGLION_BOARD
+        # board_id = BoardIds.PLAYBACK_FILE_BOARD.value
+        # self.board_id = 1
+
+        #Ganglion board
         params = BrainFlowInputParams()
         params.serial_port = "COM3"
-        params.file = "eyeBlink.csv"
-        params.master_board = BoardIds.GANGLION_BOARD
-        board_id = BoardIds.PLAYBACK_FILE_BOARD.value
+        board_id = BoardIds.GANGLION_BOARD.value
         self.board_id = 1
 
         self.board_shim = BoardShim(board_id, params)
@@ -133,6 +139,6 @@ def InitializeEEG():
     #         logging.info('Releasing session')
     #         board_shim.release_session()
 
-if __name__ == '__main__':
-   graph = Graph()
-   graph.update()
+# if __name__ == '__main__':
+#    graph = Graph()
+#    graph.update()
