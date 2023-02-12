@@ -5,6 +5,17 @@ import { useEffect, useState } from "react";
 import { setDataInput } from "../Data/testData";
 
 import React from "react";
+let socket = io("localhost:5001/", {
+  transports: ["websocket"],
+  cors: {
+    origin: "*",
+  },
+});
+
+export function sendBlinkEventToBackend() {
+  console.log("blinking");
+  socket.emit("blink");
+}
 
 export default function DataFetch() {
   const [socketInstance, setSocketInstance] = useState("");
@@ -21,12 +32,6 @@ export default function DataFetch() {
 
   useEffect(() => {
     console.log("useEffect called");
-    const socket = io("localhost:5001/", {
-      transports: ["websocket"],
-      cors: {
-        origin: "*",
-      },
-    });
 
     setSocketInstance(socket);
 
@@ -34,8 +39,8 @@ export default function DataFetch() {
       console.log("connecting to backend");
       if (d) {
         //setDataInput(JSON.parse(d.score));
-        setDataInput(JSON.parse(d.data)[0]);
-        //console.log(JSON.parse(d.score)[0]);
+        setDataInput(JSON.parse(d.data)[1]);
+        //console.log(JSON.parse(d.data)[1]);
       }
     });
 

@@ -6,6 +6,7 @@ from main import Graph
 import json
 thread = Thread()
 thread_stop_event = Event()
+from ImageClient import callPi
 
 initialized = False
 
@@ -52,6 +53,16 @@ def connected():
 
     #emit("connect",{"data":f"id: {request.sid} is connected"})
     #emit("connect",{"data":f"id: {request.sid} is connected"})
+
+canBlink = True
+def setCanBlinkToTrue():
+    global canBlink
+    canBlink = True
+
+@socketio.on("blink")
+def blinked():
+    callPi()
+    print("client has blinked")
 
 # def sendData(data):
 #     print("send data")

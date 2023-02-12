@@ -9,7 +9,7 @@ let inputValue = 0;
 export let prevValue = 0;
 
 export function setDataInput(input) {
-  console.log(`input: ${input}`);
+  //console.log(`input: ${input}`);
   if (inputQueue.length === 0) {
     inputQueue = input;
     //console.log(`adding to inputQueue ${inputQueue.length}`);
@@ -21,16 +21,34 @@ export function getPreviousValue() {
 }
 
 export function updateTestData() {
-  TestData.splice(0, 1);
+  TestData.splice(0, 3);
+  //console.log(TestData.length);
+
   prevValue = TestData.at(TestData.length - 1).data;
+
   if (USING_BACKEND_DATA) {
     inputValue = parseFloat(inputQueue.splice(0, 1));
     if (isNaN(inputValue)) inputValue = prevValue;
   } else {
     inputValue = prevValue + (Math.random() - 0.5) / 10;
   }
-  //console.log("value: " + prevValue);
-  TestData.push({ label: "", data: inputValue });
+  TestData.push({ label: "", data: Math.abs(inputValue) });
+
+  if (USING_BACKEND_DATA) {
+    inputValue = parseFloat(inputQueue.splice(0, 1));
+    if (isNaN(inputValue)) inputValue = prevValue;
+  } else {
+    inputValue = prevValue + (Math.random() - 0.5) / 10;
+  }
+  TestData.push({ label: "", data: Math.abs(inputValue) });
+
+  if (USING_BACKEND_DATA) {
+    inputValue = parseFloat(inputQueue.splice(0, 1));
+    if (isNaN(inputValue)) inputValue = prevValue;
+  } else {
+    inputValue = prevValue + (Math.random() - 0.5) / 10;
+  }
+  TestData.push({ label: "", data: Math.abs(inputValue) });
   // console.log(
   //   `TestData: ${TestData.map((i) => {
   //     return i.data;

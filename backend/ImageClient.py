@@ -33,5 +33,3 @@ def callPi(media=IMAGE):
         print('Successfully get the file')
     s.close()
     print('connection closed')
-
-callPi()

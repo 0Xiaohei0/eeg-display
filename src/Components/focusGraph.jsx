@@ -12,11 +12,13 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { TestData, updateTestData, getPreviousValue } from "../Data/testData";
+import { min } from "moment/moment";
+import { sendBlinkEventToBackend } from "./DataFetch";
 
 let dataSource = TestData;
 let updateDataSource = updateTestData;
-const focusThreshold = 0.8;
-const DATA_UPDATE_INTERVAL = 30;
+const focusThreshold = 3000;
+const DATA_UPDATE_INTERVAL = 100;
 
 ChartJS.register(
   CategoryScale,
@@ -32,6 +34,12 @@ export const options = {
   responsive: true,
   animation: false,
   pointRadius: 0,
+  scales: {
+    y: {
+      max: 6000,
+      min: -4000,
+    },
+  },
   plugins: {
     legend: {
       position: "top",
@@ -61,6 +69,7 @@ function FocusGraph() {
   const [refresh, setRefresh] = useState(false);
   const [isFocusing, setIsFocusing] = useState(false);
   const [focusAmount, setFocusAmount] = useState(0);
+  const [canBlink, setCanBlink] = useState(true);
   window.addEventListener("storage", () => {
     //console.log("dataChage");
     setRefresh(!refresh);
@@ -77,11 +86,18 @@ function FocusGraph() {
       chart.update();
       if (dataSource[0].data >= focusThreshold && !isFocusing) {
         setIsFocusing(true);
+        if (canBlink) {
+          sendBlinkEventToBackend();
+          setCanBlink(false);
+          setTimeout(function () {
+            setCanBlink(true);
+          }, 3 * 1000);
+        }
       } else if (dataSource[0].data < focusThreshold && isFocusing) {
         setIsFocusing(false);
       }
       setRefresh(true);
-    }, DATA_UPDATE_INTERVAL);
+    }, 50);
     return () => clearInterval(interval);
   }, [refresh, isFocusing]);
 
@@ -96,7 +112,7 @@ function FocusGraph() {
             }
           />
           <h3>
-            {dataSource[0].data >= focusThreshold ? "focusing" : "not focusing"}
+            {dataSource[0].data >= focusThreshold ? "blinking" : "not blinking"}
           </h3>
         </div>
         <div

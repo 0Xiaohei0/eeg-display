@@ -29,9 +29,10 @@ class Graph:
         params.file = "eyeBlink.csv"
         params.master_board = BoardIds.GANGLION_BOARD
         board_id = BoardIds.PLAYBACK_FILE_BOARD.value
-        self.board_id = -1
+        self.board_id = 1
 
         self.board_shim = BoardShim(board_id, params)
+        #self.board_shim.config_board("loopback_true")
         self.board_shim.prepare_session()
         self.board_shim.start_stream(450000)
         # self.board_id = self.board_shim.get_board_id()
@@ -39,7 +40,7 @@ class Graph:
         self.exg_channels = BoardShim.get_exg_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
         self.update_speed_ms = 50
-        self.window_size = 4
+        self.window_size = 100
         self.num_points = self.window_size * self.sampling_rate
 
         self.app = QApplication(sys.argv)
@@ -79,9 +80,10 @@ class Graph:
 
     def update(self):
         
-        print("updating board:" , end="")
-        print(self.board_shim)
+        #print("updating board:" , end="")
+        #print(self.board_shim)
         data = self.board_shim.get_current_board_data(self.num_points)
+        #print(self.num_points)
         bands = DataFilter.get_avg_band_powers(data, self.eeg_channels, self.sampling_rate, True)
         feature_vector = bands[0]
         #print(feature_vector)
@@ -91,21 +93,23 @@ class Graph:
         mindfulness = MLModel(mindfulness_params)
         mindfulness.prepare()
         score = mindfulness.predict(feature_vector)
-        print(str(score))
+        #print(str(score))
         #print('Mindfulness: %s' % str(mindfulness.predict(feature_vector)))
 
-        for count, channel in enumerate(self.exg_channels):
-            # plot timeseries
-            DataFilter.detrend(data[channel], DetrendOperations.CONSTANT.value)
-            DataFilter.perform_bandpass(data[channel], self.sampling_rate, 3.0, 45.0, 2,
-                                        FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 48.0, 52.0, 2,
-                                        FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 58.0, 62.0, 2,
-                                        FilterTypes.BUTTERWORTH.value, 0)
-            self.curves[count].setData(data[channel].tolist())
-            #print(data[0])
+        # for count, channel in enumerate(self.exg_channels):
+        #     # plot timeseries
+        #     DataFilter.detrend(data[channel], DetrendOperations.CONSTANT.value)
+        #     DataFilter.perform_bandpass(data[channel], self.sampling_rate, 3.0, 45.0, 2,
+        #                                 FilterTypes.BUTTERWORTH.value, 0)
+        #     DataFilter.perform_bandstop(data[channel], self.sampling_rate, 48.0, 52.0, 2,
+        #                                 FilterTypes.BUTTERWORTH.value, 0)
+        #     DataFilter.perform_bandstop(data[channel], self.sampling_rate, 58.0, 62.0, 2,
+        #                                 FilterTypes.BUTTERWORTH.value, 0)
+        #     self.curves[count].setData(data[channel].tolist())
+        #     #print(data[0])
         self.data = data
+        #print(len(data[1]))
+        # abs(max(data[1]),min(data[1]))
         self.score = score
         #self.curves[4].setData(mindfulness.predict(feature_vector).tolist())
         mindfulness.release()
